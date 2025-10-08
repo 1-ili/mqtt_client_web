@@ -24,16 +24,71 @@ html, body {
     flex-shrink: 0; /* Prevent sidebar from shrinking */
     background-color: #fff;
     border-left: 1px solid #e0e0e0;
-    padding: 1rem;
+    padding: 1rem 1.5rem;
     overflow-y: auto;
     box-shadow: -2px 0 8px rgba(0,0,0,0.05);
 }
 
 .sidebar h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: #005a9c;
     text-align: center;
-    margin-bottom: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.sidebar .card {
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin-bottom: 1.5rem;
+    box-shadow: none;
+}
+
+.sidebar .card h2 {
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+#subscriber-form button {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+#subscriptions-list {
+    margin-top: 1rem;
+}
+
+.subscription-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background-color: #f0f8ff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.subscription-item span {
+    word-break: break-all;
+    margin-right: 10px;
+}
+
+.subscription-item button {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    background-color: #dc3545;
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+.subscription-item button:hover {
+    background-color: #c82333;
 }
 
 .messages-container {
@@ -61,14 +116,6 @@ html, body {
     border-radius: 4px;
     white-space: pre-wrap;
     word-wrap: break-word;
-}
-
-.card {
-    background-color: #fdfdfd;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
 }
 
 .form-group {

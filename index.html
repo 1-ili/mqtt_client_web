@@ -48,12 +48,14 @@
             <!-- Subscriber Section -->
             <div class="card">
                 <h2>Subscriber</h2>
-                <div class="form-group">
+                <div class="form-group" id="subscriber-form">
                     <label for="sub-topic">Topic</label>
                     <input type="text" id="sub-topic" value="test/topic/#">
+                    <button id="btn-subscribe" disabled>Subscribe</button>
                 </div>
-                <button id="btn-subscribe">Subscribe</button>
-                <button id="btn-unsubscribe" disabled>Unsubscribe</button>
+                <div id="subscriptions-list">
+                    <!-- Subscriptions will be added here dynamically -->
+                </div>
             </div>
         </aside>
     </div>

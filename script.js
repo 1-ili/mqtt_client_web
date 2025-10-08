@@ -10,12 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const subTopicInput = document.getElementById('sub-topic');
     const subscribeBtn = document.getElementById('btn-subscribe');
-    const unsubscribeBtn = document.getElementById('btn-unsubscribe');
 
     const messagesDiv = document.getElementById('messages');
+    const subscriptionsList = document.getElementById('subscriptions-list');
 
     let client = null;
-    let subscribedTopics = {};
+    let subscribedTopics = {}; // To keep track of active subscriptions
 
     function logMessage(message, type = '') {
         const p = document.createElement('p');
@@ -40,9 +40,44 @@ document.addEventListener('DOMContentLoaded', () => {
             disconnectBtn.disabled = true;
             publishBtn.disabled = true;
             subscribeBtn.disabled = true;
-            unsubscribeBtn.disabled = true;
+            // Clear all subscriptions from UI and internal state on disconnect
             subscribedTopics = {};
+            subscriptionsList.innerHTML = '';
         }
+    }
+
+    function addSubscriptionToUI(topic) {
+        if (subscribedTopics[topic]) {
+            logMessage(`Already subscribed to '${topic}'.`, 'info');
+            return;
+        }
+
+        const subscriptionItem = document.createElement('div');
+        subscriptionItem.className = 'subscription-item';
+        // Use a base64 encoded topic as ID for uniqueness and valid HTML ID
+        subscriptionItem.id = `sub-${btoa(topic).replace(/=/g, '')}`;
+
+        const topicSpan = document.createElement('span');
+        topicSpan.textContent = topic;
+        subscriptionItem.appendChild(topicSpan);
+
+        const unsubscribeBtnItem = document.createElement('button');
+        unsubscribeBtnItem.textContent = 'Unsubscribe';
+        unsubscribeBtnItem.addEventListener('click', () => {
+            client.unsubscribe(topic, (err) => {
+                if (err) {
+                    logMessage(`Unsubscribe error from '${topic}': ${err}`, 'error');
+                } else {
+                    logMessage(`Unsubscribed from '${topic}'.`);
+                    delete subscribedTopics[topic];
+                    subscriptionItem.remove(); // Remove from UI
+                }
+            });
+        });
+        subscriptionItem.appendChild(unsubscribeBtnItem);
+
+        subscriptionsList.appendChild(subscriptionItem);
+        subscribedTopics[topic] = true;
     }
 
     connectBtn.addEventListener('click', () => {
@@ -58,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         client.on('connect', () => {
             logMessage('Successfully connected to broker.');
             setConnectionStatus(true);
+            // Optionally re-subscribe to previously active topics here if desired for better UX
         });
 
         client.on('message', (topic, payload) => {
@@ -105,32 +141,17 @@ document.addEventListener('DOMContentLoaded', () => {
             logMessage('Subscribe topic is required.', 'error');
             return;
         }
+        if (subscribedTopics[topic]) {
+            logMessage(`Already subscribed to '${topic}'.`, 'info');
+            return;
+        }
         client.subscribe(topic, (err) => {
             if (err) {
                 logMessage(`Subscribe error: ${err}`, 'error');
             } else {
                 logMessage(`Subscribed to '${topic}'.`);
-                subscribedTopics[topic] = true;
-                unsubscribeBtn.disabled = false;
-            }
-        });
-    });
-
-    unsubscribeBtn.addEventListener('click', () => {
-        const topic = subTopicInput.value;
-        if (!topic) {
-            logMessage('Unsubscribe topic is required.', 'error');
-            return;
-        }
-        client.unsubscribe(topic, (err) => {
-            if (err) {
-                logMessage(`Unsubscribe error: ${err}`, 'error');
-            } else {
-                logMessage(`Unsubscribed from '${topic}'.`);
-                delete subscribedTopics[topic];
-                if (Object.keys(subscribedTopics).length === 0) {
-                    unsubscribeBtn.disabled = true;
-                }
+                addSubscriptionToUI(topic); // Add to UI list
+                subTopicInput.value = ''; // Clear input
             }
         });
     });
