@@ -25,6 +25,14 @@
                     <input type="text" id="broker" value="ws://localhost:9001/mqtt">
                 </div>
                 <div class="form-group">
+                    <label for="username">Username (Optional)</label>
+                    <input type="text" id="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password (Optional)</label>
+                    <input type="password" id="password">
+                </div>
+                <div class="form-group">
                     <button id="btn-connect">Connect</button>
                     <button id="btn-disconnect" disabled>Disconnect</button>
                     <strong>Status:</strong> <span id="status">Disconnected</span>

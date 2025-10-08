@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const brokerInput = document.getElementById('broker');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
     const connectBtn = document.getElementById('btn-connect');
     const disconnectBtn = document.getElementById('btn-disconnect');
     const statusSpan = document.getElementById('status');
@@ -82,13 +84,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     connectBtn.addEventListener('click', () => {
         const brokerUrl = brokerInput.value;
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+
         if (!brokerUrl) {
             logMessage('Broker URL is required.', 'error');
             return;
         }
 
         logMessage(`Connecting to ${brokerUrl}...`);
-        client = mqtt.connect(brokerUrl);
+        const options = {};
+        if (username) {
+            options.username = username;
+        }
+        if (password) {
+            options.password = password;
+        }
+
+        client = mqtt.connect(brokerUrl, options);
 
         client.on('connect', () => {
             logMessage('Successfully connected to broker.');
