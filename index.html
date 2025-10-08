@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple MQTT Web Client</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Simple MQTT Web Client</h1>
+
+    <div class="container">
+        <!-- Connection Section -->
+        <div class="card">
+            <h2>Connection</h2>
+            <div class="form-group">
+                <label for="broker">Broker URL (e.g., ws://broker.hivemq.com:8000/mqtt)</label>
+                <input type="text" id="broker" value="ws://localhost:9001/mqtt">
+            </div>
+            <div class="form-group">
+                <button id="btn-connect">Connect</button>
+                <button id="btn-disconnect" disabled>Disconnect</button>
+                <strong>Status:</strong> <span id="status">Disconnected</span>
+            </div>
+        </div>
+
+        <!-- Publisher Section -->
+        <div class="card">
+            <h2>Publisher</h2>
+            <div class="form-group">
+                <label for="pub-topic">Topic</label>
+                <input type="text" id="pub-topic" value="shotcrete/control/camera/set">
+            </div>
+            <div class="form-group">
+                <label for="pub-payload">Payload (JSON)</label>
+                <textarea id="pub-payload">{"command": "restart"}</textarea>
+            </div>
+            <button id="btn-publish" disabled>Publish</button>
+        </div>
+
+        <!-- Subscriber Section -->
+        <div class="card">
+            <h2>Subscriber</h2>
+            <div class="form-group">
+                <label for="sub-topic">Topic</label>
+                <input type="text" id="sub-topic" value="shotcrete/status/#">
+            </div>
+            <button id="btn-subscribe" disabled>Subscribe</button>
+            <button id="btn-unsubscribe" disabled>Unsubscribe</button>
+        </div>
+
+        <!-- Messages Section -->
+        <div class="card">
+            <h2>Messages</h2>
+            <div id="messages"></div>
+        </div>
+    </div>
+
+    <!-- MQTT.js from CDN -->
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
