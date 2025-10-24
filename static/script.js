@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const messagesDiv = document.getElementById('messages');
     const subscriptionsList = document.getElementById('subscriptions-list');
+    const clearMessagesBtn = document.getElementById('btn-clear-messages');
 
     let client = null;
     let subscribedTopics = {}; // To keep track of active subscriptions
@@ -24,8 +25,16 @@ document.addEventListener('DOMContentLoaded', () => {
         p.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
         p.className = `message ${type}`;
         messagesDiv.appendChild(p);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        // Ensure scroll to bottom after DOM update
+        setTimeout(() => {
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }, 0); // Small delay to allow rendering
     }
+
+    clearMessagesBtn.addEventListener('click', () => {
+        messagesDiv.innerHTML = '';
+        logMessage('Message log cleared.', 'info');
+    });
 
     function setConnectionStatus(connected) {
         if (connected) {

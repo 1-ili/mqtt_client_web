@@ -105,6 +105,20 @@ html, body {
     margin-top: 0;
     padding-bottom: 1rem;
     border-bottom: 1px solid #eee;
+    display: flex; /* Added for alignment */
+    justify-content: space-between; /* Added for alignment */
+    align-items: center; /* Added for alignment */
+}
+
+.messages-container h2 button {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    background-color: #6c757d; /* Gray color */
+    margin-right: 0; /* Remove extra margin */
+}
+
+.messages-container h2 button:hover {
+    background-color: #5a6268;
 }
 
 #messages {
@@ -116,6 +130,7 @@ html, body {
     border-radius: 4px;
     white-space: pre-wrap;
     word-wrap: break-word;
+    min-height: 0; /* Crucial for scrollable flex item */
 }
 
 .form-group {
@@ -175,8 +190,15 @@ button:disabled {
 }
 
 .message {
-    padding: 5px;
-    border-bottom: 1px solid #eee;
+    font-size: 0.85rem;
+    padding: 2px 5px;
+    margin-bottom: 0;
+    border-bottom: none;
+    line-height: 1.2;
+}
+
+.message:last-child {
+    padding-bottom: 0;
 }
 
 .message.published {
